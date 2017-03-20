@@ -1,0 +1,198 @@
+
+***** Good practices for submitting patches *****
+
+This document proposes suggestions of development practices for patch
+submission. It's a reference to improve the revision process, and
+manage the software life-cycle more efficiently.
+
+BLOCKING: mandatory practices. Patches breaking theses rules should not
+be integrated.
+
+The remaining practices are suggestion to be used wisely in benefit of
+the project.
+
+1. [BLOCKING] Never introduce a commit that breaks other classes or
+    unit tests
+
+2. [BLOCKING] Conflicts & re-base
+   Authors are responsible for re-basing, solve/review conflicts,
+   and execute tests before pushing for review.
+
+3. [BLOCKING] Author's signature is mandatory
+   Signed-of-by: is mandatory in the commit body
+
+4. [BLOCKING] Always add a unit test for each feature
+   It is mandatory to have unit tests for new classes and
+   methods introduced.
+
+5. Break patches into logical chunks
+   5.1 Divide to conquer: Smaller the patch-set size, easier to
+       push them upstream.
+   5.2 When implementing a new feature, avoid inserting bug fixes
+       and cosmetic changes
+   5.3 Submit patches frequently(incremental development)
+
+6. Reduce the delta changes
+   6.1 Avoid moving code if it is not strictly needed
+   6.2 Never rename files and introduce changes in the same commit
+   6.3 Never introduce variables/properties if there isn't reference
+       in the introduced commit
+   6.4 Never change code that doesn't belongs directly to the current
+       implementation
+
+7. Avoid creating dependencies between gerrit changes
+   For independent changes, use development branches and push them
+   on separated threads
+
+8. Add references
+   The commit message and the code should have external references
+   to the feature under development. eg: 3GPP, METIS
+
+9. Follow 50/72 columns in commit messages
+   Good practices recommends using capitalized, short (50 chars
+   or less) subject, followed by blank line and the commit message
+   body (72 chars or less on each line).
+
+10. Coding style
+   10.1 Restrict each line to 160 columns
+   10.2 Use alignment to right (multiple lines)
+   10.3 Remove white-spaces at the end of the line
+
+=======================================================
+  Examples of how to break patches into logical chunks
+=======================================================
+commit1: Add abstract class X
+commit2: Add unit test for class X
+commit3: Add subclass Y derived from X
+commit4: Add unit test for class Y
+commit5: Add method 'decode()' to class Y
+
+
+commit1: Rename file foo.m to boo.m
+commit2: Add method 'hide()' to class boo
+
+=======================================================
+  50/72 suggestion for commit messages
+=======================================================
+unit: Fix unit test on Linux
+
+This patch fixes classes path error on Linux. 'filesep'
+should be used instead of hard-coded '\'.
+
+Change-Id: Ia34cab88319515c685f8c6a13a59bc221d5e83fa
+Signed-off-by: John Doe <john.doe@indt.org.br>
+
+
+=======================================================
+  Reducing the delta changes
+=======================================================
+
+Moving code increases the delta (changed code), and makes it
+is harder to identify changes introduced in the same part of
+the code.
+
+Avoid rename files and introduce changes. To detect small changes on
+renamed files, Git uses certain heuristic algorithms that may not give
+the same expected result depending on the amount of introduced changes.
+Additionally, merge/re-base may be not fast-forward, specially when
+developing a feature shared between developers.
+
+Add new code at the end of the file is another good practice to reduce
+the delta.
+
+
+*** Good example (Where is Wally?):
+diff --git a/src/+bare/+entity/Node.m b/src/+bare/+entity/Node.m
+index a8026c4..10059a3 100644
+--- a/src/+bare/+entity/Node.m
++++ b/src/+bare/+entity/Node.m
+@@ -40,6 +40,7 @@ classdef Node < handle
+         receiverNoiseFigure;
+         thermalNoise;
+         connectionStatus;
++        whereiswally;
+     end
+
+@@ -59,6 +60,7 @@ classdef Node < handle
+             this.receiverNoiseFigure = ones( numberOfNodes, 1 );
+             this.thermalNoise = ones( numberOfNodes, 1 );
+             this.connectionStatus = ones( numberOfNodes, 1 );
++            this.whereiswally = 0;
+         end
+
+*** Bad example (Where is Wally?):
+Same example renaming file and changing the code.
+
+diff --git a/src/+bare/+entity/Foo.c b/src/+bare/+entity/Foo.c
+new file mode 100644
+index 0000000..f765705
+--- /dev/null
++++ b/src/+bare/+entity/Foo.c
+@@ -0,0 +1,67 @@
++classdef Foo < handle
++    %NODE Class that defines the main properties for any node.
++    %   This class defines objects that will serve as data
++    %   containers of every node properties during simulation. Its
++    %   properties are all public and can be accessed by any method or
++    %   function of the System Level Simulator.
++    %
++    %   Properties:
++    %       numberOfNodes - <1x1 double> (unit) Number of nodes on simulation
++    %       numberOfAntennas - <1x1 double> (unit) Number of antennas at each node
++    %       antenna - <object> (unit) Antenna properties according to its type
++    %       position - <Nx3 double> (unit) Position for every node
++    %       height - <Nx1 double> (unit) Height of each node
++    %       transmitPower - <Nx1 double> (unit) Transmit power for each node
++    %       maxTransmitPower - <Nx1 double> (unit) Maximum transmit power for each
++    %           node
++    %       speed - <Nx1 double> (unit) Speed of each node
++    %       receiverNoiseFigure - <Nx1 double> (unit) Receiver noise for each node
++    %       thermalNoise - <Nx1 double> (unit) Thermal noise for each node
++    %       connectionStatus - <Nx1 double> (unit) Status of the connection of
++    %       	each node
++    %
++    %   Methods:
++    %       m_nameOfNewMethod - Concise 1-line definition for this method.
++    %
++    %   Author:
++    %   Work Address:
++    %   e-mail:
++
++    properties ( Access = 'public' )
++
++        numberOfNodes;
++        numberOfAntennas;
++        antenna;
++        position;
++        height;
++        transmitPower;
++        maxTransmitPower;
++        speed;
++        receiverNoiseFigure;
++        thermalNoise;
++        connectionStatus;
++        whereiswally;
++    end
++
++    methods
++
++        % constructor
++        function this = Foo( numberOfNodes )
++
++            this.numberOfNodes = numberOfNodes;
++            this.numberOfAntennas = ones( numberOfNodes, 1 );
++            this.antenna = []; % the antenna class
++            this.position = ones( numberOfNodes, 3 );
++            this.height = ones( numberOfNodes, 1 );
++            this.transmitPower = ones( numberOfNodes, 1 );
++            this.maxTransmitPower = ones( numberOfNodes, 1 );
++            this.speed = ones( numberOfNodes, 1 );
++            this.receiverNoiseFigure = ones( numberOfNodes, 1 );
++            this.thermalNoise = ones( numberOfNodes, 1 );
++            this.connectionStatus = ones( numberOfNodes, 1 );
++            this.whereiswally = 0;
++        end
++
++    end
++
++end
