@@ -85,8 +85,9 @@ switch this.waveform
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
         
         % Passing the signal through the filter
+        y = this.fftSize/2;
         signalInTime = conv(signalInTime, this.fofdmFilterInTime); % Filtering
-        signalInTime = signalInTime(1024:33279); %===========================================
+        signalInTime = signalInTime(y:length(signalInTime)-y); %===========================================
 end
 
 
