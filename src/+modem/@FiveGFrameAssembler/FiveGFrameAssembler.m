@@ -130,6 +130,13 @@ classdef FiveGFrameAssembler < modem.FrameAssembler
                                       filterTail/FIVEG.USEFUL_BLOCKS;
                     this.symbolLength = samplesInSymbol / samplingRate;
                     this.blockSize = FIVEG.USEFUL_SUBCARRIERS/2; 
+                case enum.modem.fiveG.Waveform.FOFDM
+                    samplingRate = FIVEG.SUBCARRIER_SPACING * ...
+                                   FIVEG.FFT_SIZE;
+                    samplesInSymbol = FIVEG.FFT_SIZE + ...
+                                      FIVEG.WAVEFORM.OFDM.CYCLIC_PREFIX;
+                    this.symbolLength =  samplesInSymbol / samplingRate;
+                    this.blockSize = FIVEG.USEFUL_SUBCARRIERS;                    
                 otherwise
                     error('Waveform not supported');
             end

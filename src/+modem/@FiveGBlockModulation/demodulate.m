@@ -23,7 +23,10 @@ switch this.waveform
         numberOfSubcarriers = this.frame.blockSize + this.samplesInPrefix + ...
                               this.samplesInTail;
     case enum.modem.fiveG.Waveform.FBMC
-        numberOfSubcarriers = 2 * this.frame.blockSize; 
+        numberOfSubcarriers = 2 * this.frame.blockSize;
+        %FOFDM not implemented
+    case enum.modem.fiveG.Waveform.FOFDM
+        numberOfSubcarriers = this.frame.blockSize;        
 end
 
 frameReceived  = zeros ( numberOfSubcarriers, ...
@@ -60,7 +63,20 @@ for antCount = 1 : this.numberOfAntennas
                rxSignal = rxSignal(:,2*this.prototypeFilter.filterParameters.K ...
                -1:end-(2*this.prototypeFilter.filterParameters.K-1)+1);
         end
-    
+        
+        %FOFDM not implemented
+        if this.waveform == enum.modem.fiveG.Waveform.FOFDM
+            % passing the recovered signal through the filter
+            rxSignal = conv(rxSignal, this.fofdmFilterInTime); % filtering
+            rxSignal = rxSignal(1024:33279);%=======================
+            
+            % remove cyclic prefix
+            rxSignal = reshape( rxSignal, this.samplesInSymbol, ...
+                                this.frame.numberOfUsefulBlocks );
+                            
+            rxSignal(  1 : this.samplesInPrefix, : ) = [];
+            rxSignal = fft( rxSignal );        
+        end
              
     % recover non-null subcarriers
     frameReceived ( :, :, antCount ) = rxSignal( this.subcarrierFreqMap, : );

@@ -69,7 +69,24 @@ switch this.waveform
           synthesisFilterBank( this, signalInFreq );
       
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
-         
+    
+    %FOFDM implementation incomplete. The code below is just a copy of the OFDM implementation    
+    case enum.modem.fiveG.Waveform.FOFDM 
+        % map frame to FFT
+        signalInFreq = zeros( this.fftSize, ...
+                              this.frame.numberOfUsefulBlocks );
+        signalInFreq( this.subcarrierFreqMap, :, : ) = transmittedFrame;
+
+        % apply IFFT and add cyclic prefix
+        signalInTime = ifft( signalInFreq );
+        signalInTime = [ signalInTime( end - this.samplesInPrefix + 1 : end, : ); ...
+                         signalInTime ];
+        
+        signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
+        
+        % Passing the signal through the filter
+        signalInTime = conv(signalInTime, this.fofdmFilterInTime); % Filtering
+        signalInTime = signalInTime(1024:33279); %===========================================
 end
 
 
