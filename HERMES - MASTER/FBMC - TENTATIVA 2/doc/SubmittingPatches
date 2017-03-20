@@ -1,0 +1,287 @@
+        How to Get Your Change Into BARE
+
+
+This document provides basic instructions for patch submission, and
+useful tricks to work with gerrit and git.
+
+Based on Linux Kernel documentation[1].
+
+-----------------------------------
+SECTION 1 - Environment Setup
+-----------------------------------
+1) First-Time Git Setup
+
+Recommended git client: http://git-scm.com/download/win
+
+Signature is mandatory for all commits. Use your INdT address to sign
+your patches.
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@indt.org.br
+
+Checking your settings
+$ git config --list
+
+2) Cloning hermes repository
+Requirements: SSH public key uploaded to gerrit (http://gerrit.indt.org),
+and user added to bare-devel group (contact the administrators:
+loide.jesus@indt.org.br or claudio.takahasi@indt.org.br).
+$git clone ssh://johndoe@gerrit.indt.org:29418/hermes hermes.git
+
+3) Change-Id - Mandatory
+Gerrit tracks patchset versions based on "Change-Id" hash included in
+the commit message. When amending or picking commits, commit-msg hook
+keeps the "Change-Id" or includes a new hash in order to allow the
+Gerrit server to track revisions. This procedure is similar to
+"--in-reply-to" option.
+
+Copying "commit-msg" script:
+$scp -p -P 29418 johndoe@gerrit.indt.org:/hooks/commit-msg .
+$mv commit-msg .git/hooks
+
+Optional step, testing "Change-Id":
+$git commit -a -s --allow-empty (Adds a new Change-Id at the end of message)
+$git log -p
+$git commit --amend -s (keeps the current Change-Id")
+$git log -p
+$git reset --hard HEAD~1
+
+4) git review tool - Optional
+
+http://www.mediawiki.org/wiki/Gerrit/git-review
+
+Gerrit WEB frontend can be used for review, and manage reviewers list.
+For advanced users/developers, git-review command-line can be used to
+automate some tasks.
+
+step 1: Adding gerrit remote
+$git remote add gerrit ssh://johndoe@gerrit.indt.org:29418/hermes
+
+step 2: Configuring the reviewers to be automatically added when
+submiting changes:
+
+Ignore this step if you want to manage manually the reviewers using
+gerrit web services.
+
+$git config remote.gerrit.receivepack 'git receive-pack --reviewer \
+richard.roe@indt.org.br --reviewer jane.doe@indt.org.br'
+$ git review --setup
+
+---------------------------------------
+SECTION 2 - Gerrit & git workflow
+---------------------------------------
+
+-----------------------------------------------------------------------------------------
+|      LOCAL Repository           |        Git/Gerrit server                            |
+-----------------------------------------------------------------------------------------
+hermes.git          <-- clone(1) -- |        hermes.git
+devel_johndoe(2)                  |
+devel_johndoe      -- push(3) --> | refs/for/master(4) -- review(5) --> rework (6)
+devel_johndoe(7)   -- push(8) --> | refs/for/master(9) -- review(10) --> remote/master(11)
+
+(1)  See SECTION 1.2
+(2)  It is strongly recomended to implement your features using
+     development branches instead of local master. Use the following
+     command to create a new branch (using master as baseline):
+     $ git checkout -b devel_johndoe
+     Instructions to create a NEW commit are described in the
+     SECTION 3.3.
+(3)  Submits your patches for review (see SECTION 3.5). Pushing your
+     patches will create changes on gerrit for review/integration.
+     "Change-Id" mentioned earlier is the 'key' used to manage changes,
+     and versioning.
+(4)  The author will receive an e-mail and must select the reviewers
+     (Gerrit WEB) when "gerrit review tool" is not properly configured.
+(5)  The author receives an email when the reviewer publish his
+     comments.
+(6)  Use commit "amend" option to commit your rework. Amend appends
+     the changes in your last commit. Note that git hash changes, and
+     Change-Id hash remains the same. Allowing gerrit to trace a new
+     version of a given change/patch.
+(7)  Rebase (IMPORTANT) your changes before pushing your re-work for
+     review. Other patches (from other developers) may be integrated
+     during your re-work.
+(8)  Same as (3)
+(9)  A new version is created in the gerrit change control, and the
+     reviewers will receive automatically an e-mail.
+(10) Change/patch will be automatically integrated in the repository
+     after the reviewers approves it.
+
+Git[3] is a distributed version control system, nearly every operation
+is LOCAL. Gerrit[2] is a free, web-based collaborative code review tool
+that INTEGRATES with Git creating an abstraction for managing review
+patches (a.k.a. changes in Gerrit) and automatically merge patches to
+master.
+
+"Change-Id" is the key to control threads/versions. Abandoned patchsets
+may return "no changes". If you need to re-create a new thread/patchset
+remove the "Change-Id": commit-msg hook will add automatically a new
+hash value.
+
+Commit message example containing Change-Id:
+
+"commit b2b0ac3364d3ee81ef448e3b2c2adbcc49a27b9f
+Author: John Doe <john.doe@indt.org.br>
+Date:   Wed Nov 12 09:42:43 2014 -0400
+
+    Initial empty repository
+
+    Change-Id: Iedf416535bf2dc058f9f80c2a6d90d9bbedc4435
+    Signed-off-by: John Doe <john.doe@indt.org.br>
+"
+
+Git SHA1 hash represents the state of the repository at certain point.
+Change-Id is *restricted* to Gerrit, it is global unique hash added
+automatically in the footer of a commit message by the git commit-msg
+hook. When present, Gerrit uses this hash to track commits across
+cherry-picks, rebases, and review versions.
+
+AVOID using git merge command, rebase command will provide a similar
+result beyond keeping your workflow easier. Rebase forces developers to
+solve conflicts locally with other patches, and ignore old patch
+versions.
+
+--------------------------------------------
+SECTION 3 - CREATING AND SENDING YOUR CHANGE
+--------------------------------------------
+
+1) Describe your changes.
+
+Describe your problem.  Whether your patch is a one-line bug fix or
+5000 lines of a new feature, there must be an underlying problem that
+motivated you to do this work.  Convince the reviewer that there is a
+problem worth fixing and that it makes sense for them to read past the
+first paragraph.
+
+Avoid phrasal verbs in gerund form, describe your changes in imperative
+mood, e.g. "make xyzzy do frotz" instead of "[This patch] makes xyzzy
+do frotz" or "[I] changing xyzzy to do frotz", as if you are giving
+orders to the codebase to change its behaviour.
+
+2) Development branches
+
+Before creating a new branch always fetch the latest commits and
+rebase your local master branch. For maintainance purpose, it is
+encouraged to follow a standard for branch names.
+
+$git checkout -b devel_<johndoe>_<featurename>
+
+3) Git Commits
+
+After switching to your development branch you are ready to start the
+development of a new feature (or bug fixing). Use a incremental
+approach breaking your development in small chunks/blocks of functional
+code. If you are not familiar with git commands, please avoid using
+"-a" option to add all the changed (only versioned) files when
+commiting.
+
+* How to add a file (new or versioned) to a NEW commit:
+$git add file.m
+$git commit -s
+
+Note that Change-Id and Signed-of-by are added automatically at the
+bottom of the commit message body.
+
+* How amend (append) changes to an EXISTING (last) commit:
+$git add file.m
+$git commit --amend
+
+Note that git commit hash is changed, and Change-Id hash remains the
+same.
+
+4) Submitting DRAFTS to master
+
+Gerrit allows pushing draft patches. It can be used as backup or to
+share earlier patch versions. Later, reviewers or admins can promote
+the patchset to merge candidate. For shared feature development,
+development branches (See SECTION 4) is another alternative to temporarily
+share patches and rebase them easly in your local development branch.
+
+$git push origin HEAD:refs/drafts/master
+
+Visit the gerrit commit url to manage/select the reviewers.
+
+5) Submitting patch to master
+
+In order to avoid potential conflicts, rebase your development branch
+before submitting your patches:
+$git fetch remote
+$git rebase origin/master
+
+Submitting your COMMITS to remote for review/integration:
+$git push gerrit HEAD:refs/for/master
+
+For tortoise-git users, set origin as HEAD (or your development branch)
+and remote as "refs/for/master".
+
+"refs/for/master" means "Please submit this as a review for branch
+master".
+
+This command creates traceable patchsets manageable through the gerrit
+server web server.
+
+Replacing "gerrit" by "origin" (when pushing changes) has a similar
+effect. Except the fact that "origin" doesn't have reviewer list enabled.
+
+----------------------------------------
+SECTION 4 - Remote Development branches
+----------------------------------------
+
+Directly push to (origin) master is strictly forbidden. Gerrit access control
+rules are enabled preventing push attempts of branches outside the developers
+namespace, refs/for/drafts, or refs/for/master.
+
+Development branches usage is RESTRICTED to backup or temporarily SHARING the
+code with other users. It SHOULD NOT be used to develop experimental features.
+Configuration options can be used to enable/disable features, ALL developed
+code should be properly integrated and tagged.
+
+For each user, a personal namespace is available following the defined
+standard:
+refs/heads/sandbox/${username}/*
+
+Pushing Alicia's branch to gerrit/git server (--force is allowed):
+$git push origin HEAD:refs/heads/sandbox/alicia/devel_alicia
+
+Fetching the changes from another machine (eg: John's repo):
+$git remote update
+
+The previous git command fetches the objects references (commits/branches/tags)
+from the gerrit/git server. If you need to create an integration branch (shared
+development), rebase your development branch after fetching the remote branch.
+git-rebase command will forward/shift your local commits to the head (top of
+your branch).
+eg:
+local master:
+  commit hash: bbbb...
+  commit hash: aaaa...
+
+remote/devel_alicia:
+  commit hash: cccc...
+  commit hash: bbbb...
+  commit hash: aaaa...
+
+devel_johndoe (current branch, using local master as baseline):
+  commit hash: eeee... (new commit: feature 2)
+  commit hash: ffff... (new commit: feature 1)
+                      <<< Rebase inserts 'cccc...' here
+  commit hash: bbbb...
+  commit hash: aaaa...
+
+$git rebase -i origin/sandbox/alicia/devel_alicia
+(Assuming devel_johndoe as current branch)
+
+Deleting remote branches (Access restricted to the owner)
+$git push :refs/heads/sandbox/johndoe/devel_johndoe
+(John's repo/machine)
+
+$git push :refs/heads/sandbox/alicia/devel_alicia
+(Alicia's repo/machine)
+
+----------------------
+SECTION 5 - REFERENCES
+----------------------
+
+[1] Linux kernel documentation,
+    https://www.kernel.org/doc/Documentation/SubmittingPatches
+[2] Gerrit Tutorial, http://www.mediawiki.org/wiki/Gerrit/Tutorial
+[3] Git, http://git-scm.com/book/en/v1/Getting-Started

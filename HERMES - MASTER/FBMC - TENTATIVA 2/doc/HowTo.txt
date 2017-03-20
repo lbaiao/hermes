@@ -1,0 +1,203 @@
+	Heterogeneous Radio Mobile Simulator (HERMES)		
+
+		How to run Hermes Simulations
+
+This document provides a description of Hermes simulator features and
+basic instructions for running simulations.
+
+
+Copyright (c) 2015 INDT - Institute of Technology Development.	
+
+The program may be used and/or copied only with the written	
+permission of INDT, or in accordance with the terms and conditions	
+stipulated in the agreement/contract under which the program has been	
+supplied.
+
+---------------------------------------------------------------------
+HISTORY 
+---------------------------------------------------------------------
+
+Version		Date		Author 			Description		
+v1.0    15 - April - 2015       Erika Almeida           Document created     
+v2.0    22 - February - 2016    Andre Noll Barreto      Updated
+
+---------------------------------------------------------------------
+SECTION 1 - Version Description
+---------------------------------------------------------------------
+
+Heterogeneous Radio Mobile Simulator, Hermes, is a semi-static time-driven 
+link level simulator. This is an object-oriented simulator, 
+developed in Matlab version 2014b.
+
+
+
+
+The main features of this version of the simulator are:
+
+
+The current version of the code is organized as follows:
+
+hermes folder
+	Contains files that are needed for lauching the simulator.
+	The main files are:
+	- executeTests - used to automatically run unit tests
+	- hermes - calls hermesStart() function
+	- hermesMain - 	the magic happens here! :) This is the main simulation
+		       	file, where the scenario is created and where the simulation
+			loop is started.
+	
+	Brief explanation of hermes folders:
+	>> doc contains the simulator documentation
+	>> parameters contains parameters files
+	>> src contains the code source. 
+		+ channel: channel specific classes and methods
+		+ enum: enumerated constants classes
+		+ lookupTables: tables gathered from technology specs.
+		+ modem: all classes related to transmission or reception of signals
+		+ networkEntity: classes related to the node or antennas
+		+ parameterCheck: classes & methods related to checking the parameters
+		+ scenario: contemplates the scenario creationg according to paramenters.
+		+ simulatorCore: classes to manage the simulation loop & statistics
+		+ source: generation / comparison of bits		
+
+	>> unit contains the unit tests for all defined classes and 
+           functions
+
+---------------------------------------------------------------------
+SECTION 2 - Getting access to the code
+---------------------------------------------------------------------
+This version of the simulator is available to INDT employees.
+
+Hermes code is available at: 
+git clone http://<user-name>@gerrit.indt.org/hermes
+
+To have access to this code, please contact:
+andre.noll@indt.org
+
+---------------------------------------------------------------------
+SECTION 3 - Using the simulator
+---------------------------------------------------------------------
+
+1) Setting the parameters
+
+
+The parameters are read from input folder "parameters"
+
+In this version, two files are available as examples of input parameters:
+	+ generalSimulationSettings
+	+ lteSimulationSettings / fivegSimulationSettings (depending on the desired technology)
+
+a) generalSimulationSettings sets parameters related to the 
+simulation loop and the simulation scenario. 
+
+Examples of the parameters set in this file:
+- Number of simulation drops
+- SNR vector
+- Simulation duration
+- Number and configuration of simulation nodes
+- Number and configuration of simulation modems
+
+Important definitions:
+NODE: it is a spatial indexation of modems
+MODEM: reception or transmission modem. One node may be associated with
+many modems.
+
+b) lteSimulationSettings/ fiveGSimulationSettings are a technology-specific
+   simulation files.
+
+Examples of the parameters set in this file:
+- Duplex Mode
+- System bandwidth
+- Subcarrier spacing
+
+
+c) Including new RATs in the simulation
+
+The RAT of a modem is defined in the generalSimulationSettings, by the
+parameter
+
+			SETTINGS.SCENARIO.MODEM{ x }.TECHNOLOGY
+
+x corresponds to the modem index in this simulation.
+
+Possible values for this parameter are available at:
+src/+enum/Technology
+
+Once the technology is set, the simulator will load the parameters defined 
+in the technology specific parameter file, described in Section 3b
+
+
+2) Starting a simulation
+
+Before running the first simulation, all the mex-files must be compiled, by
+calling
+>> compileHermes
+
+It is necessary that a Matlab-supported C++ compiler be installed.
+
+
+There are several forms of starting a local simulation:
+    + With predefined input file, results folder name and seed
+    + With predefined input file and results folder name. Random seed.
+	+ With predefined input file, default results folder name and random 
+      seed.
+    + With default input file and results folder name. Random seed.
+	
+a) Predefined input file, results folder name and seed
+
+To start a simulation using predefined seed and folders name, use
+the function:
+
+>> hermesStart( inputParametersDir, resultsDirectory, seed )
+
+In this case, parameters will be read from inputParametersDir,
+results will be saved in resultsDirectory,
+and the simulation will use the seed specified.
+If the folder parameters may be left empty [], then the default folders
+will be considered
+
+b) Predefined input file and results folder name. Random seed.
+
+>> hermesStart( inputParametersDir, resultsDirectory )
+
+In this case, parameters will be read from inputParametersDir,
+results will be saved in resultsDirectory. A random seed will be generated.
+
+c) Predefined input file, default results folder name and random seed.
+
+>> hermesStart( inputParametersDir )
+
+d) With default input file and results folder name. Random seed.
+>> hermes
+
+In this case, parameters will be read from inputParametersDir. Results will
+be saved in a new directory called:
+
+results/Year-Month-Day_Hour-Minute-Second
+
+A random seed will be used.
+
+
+This function calls script hermesStart( ), in this case,
+inputParametersDir is replaced by "parameters" dir, a random seed
+is used for the simulation and a new directory is created with the name:
+
+	results/Year-Month-Day_Hour-Minute-Second
+
+3) Reading the results
+
+The results are always saved in the resultsDirectory, as well as the
+parameters file.
+Results are aggregated in a .mat file that contains the struct statistics.
+The fields of this struct are:
+
++ snrVector < 1 x SNRvalues double >: Vector with SNR values used in the
+simulation
++ confidenceLevel < double >: Desired confidence level of the bit error 
+rate at the end of the simulation
++ berMean < 1 x SNR values double >: Mean value of BER, per SNR level
++ blerMean < 1 x SNR values double >: Mean value of BLER, per SNR level
++ berErrorMargin  < 1 x SNR values double >: error margin of BER, per 
+SNR level
++ blerErrorMargin < 1 x SNR values double >: error margin of BLER, per 
+SNR level
