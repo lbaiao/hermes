@@ -68,7 +68,8 @@ for antCount = 1 : this.numberOfAntennas
         if this.waveform == enum.modem.fiveG.Waveform.FOFDM
             % passing the recovered signal through the filter
             rxSignal = conv(rxSignal, this.fofdmFilterInTime); % filtering
-            rxSignal = rxSignal(1024:33279);%=======================
+            y = this.fftSize/2;
+            rxSignal = rxSignal(y:length(rxSignal)-y);%=======================
             
             % remove cyclic prefix
             rxSignal = reshape( rxSignal, this.samplesInSymbol, ...
