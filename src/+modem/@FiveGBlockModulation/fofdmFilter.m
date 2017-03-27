@@ -4,13 +4,16 @@ function [filterInTime] = fofdmFilter (this, filterSize)
 B_fiveG = (this.subcarrierSpacing)*(this.usefulSubcarriers + 1);
 f_low = -B_fiveG/2;
 f_high = B_fiveG/2;
+fs = (this.samplingRate); % Teste
 
 % Filter prototype in the frequency domain
-f = [-5*B_fiveG:(10*B_fiveG + 1)/filterSize:5*B_fiveG];
-prototypeInFrequency = rectangularPulse(f_low, f_high, f); % Rectangular pulse from -B_fiveG to B_fiveG
+f = [0:(fs + 1)/filterSize:fs]; % Teste
+prototypeInFrequency = rectangularPulse(0, B_fiveG/2, f) + rectangularPulse(fs - B_fiveG/2, fs, f); %
+%f = [-2*B_fiveG:(4*B_fiveG + 1)/filterSize:2*B_fiveG];
+%prototypeInFrequency = rectangularPulse(f_low, f_high, f); % Rectangular pulse from -B_fiveG to B_fiveG
 
 % Filter prototype in the time domain
-prototypeInTime = abs(ifft(prototypeInFrequency)); 
+prototypeInTime = ifft(prototypeInFrequency); 
 prototypeInTime = fftshift(prototypeInTime); % Shifting the representation to the origin
 
 % Multiplying the prototype filter in the time domain by the window
