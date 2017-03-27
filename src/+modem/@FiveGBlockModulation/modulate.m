@@ -69,8 +69,7 @@ switch this.waveform
           synthesisFilterBank( this, signalInFreq );
       
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
-    
-    %FOFDM implementation incomplete. The code below is just a copy of the OFDM implementation    
+        
     case enum.modem.fiveG.Waveform.FOFDM 
         % map frame to FFT
         signalInFreq = zeros( this.fftSize, ...
@@ -83,36 +82,14 @@ switch this.waveform
                          signalInTime ];
         
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
-        
-        % Plotting the signal's spectrum===================================
-        %signalSpec1 = fft(signalInTime);
-        %signalSpec1 = fftshift(signalSpec1);
        
-        
         % Passing the signal through the filter
-        y = this.fftSize/2;
         signalInTime = conv(signalInTime, this.fofdmFilterInTime); % Filtering
+        signalInTime = signalInTime(this.fftSize/2:length(signalInTime)-this.fftSize/2); % Removing the expanded samples after filtering
         
-        %largeSpec = fft(signalInTime);
-        %largeSpec = fftshift(largeSpec);
-        %x = [0:length(largeSpec) - 1];
-        %subplot(2, 1, 1);
-        %plot(x, signalInTime);
-        
-        signalInTime = signalInTime(y:length(signalInTime)-y); %===========================================
-        
-        % ========================================
-        [signalSpec, f] = pwelch(signalInTime, [], [], this.fftSize, this.samplingRate);
-        %f = [0:length(signalSpec) - 1];
-        plot(f, signalSpec);
-        
-        %signalSpec2 = fft(signalInTime);
-        %signalSpec2 = fftshift(signalSpec2);
-        %freqs = [0:length(signalSpec2)-1];
-        %hold on
-        %subplot(2, 1, 2); 
-        %plot(freqs, signalSpec2, 'r');
-        display('Espectro!');
+        [signalSpec, f] = pwelch(signalInTime, [], [], this.fftSize, this.samplingRate); %==========
+        %signalSpec = fftshift(signalSpec);
+        %plot(f, signalSpec);
         
 end
 
