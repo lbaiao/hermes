@@ -24,7 +24,6 @@ switch this.waveform
                               this.samplesInTail;
     case enum.modem.fiveG.Waveform.FBMC
         numberOfSubcarriers = 2 * this.frame.blockSize;
-        %FOFDM not implemented
     case enum.modem.fiveG.Waveform.FOFDM
         numberOfSubcarriers = this.frame.blockSize;        
 end
@@ -64,12 +63,11 @@ for antCount = 1 : this.numberOfAntennas
                -1:end-(2*this.prototypeFilter.filterParameters.K-1)+1);
         end
         
-        %FOFDM not implemented
+        %FOFDM partially complete
         if this.waveform == enum.modem.fiveG.Waveform.FOFDM
             % passing the recovered signal through the filter
             rxSignal = conv(rxSignal, this.fofdmFilterInTime); % filtering
-            y = this.fftSize/2;
-            rxSignal = rxSignal(y:length(rxSignal)-y);%=======================
+            rxSignal = rxSignal(this.fftSize/2:length(rxSignal)-this.fftSize/2); % removing the expanded samples after filtering
             
             % remove cyclic prefix
             rxSignal = reshape( rxSignal, this.samplesInSymbol, ...
