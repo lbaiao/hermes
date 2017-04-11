@@ -63,17 +63,18 @@ for antCount = 1 : this.numberOfAntennas
                -1:end-(2*this.prototypeFilter.filterParameters.K-1)+1);
         end
         
-        %FOFDM partially complete
         if this.waveform == enum.modem.fiveG.Waveform.FOFDM
             % passing the recovered signal through the filter
             rxSignal = conv(rxSignal, this.fofdmFilterInTime); % filtering
-            rxSignal = rxSignal(this.fftSize/2:length(rxSignal)-this.fftSize/2); % removing the expanded samples after filtering
+            rxSignal = rxSignal(this.fftSize/2+2:length(rxSignal)-this.fftSize/2+2); % removing the expanded samples after filtering
             
             % remove cyclic prefix
             rxSignal = reshape( rxSignal, this.samplesInSymbol, ...
                                 this.frame.numberOfUsefulBlocks );
                             
             rxSignal(  1 : this.samplesInPrefix, : ) = [];
+            
+            
             rxSignal = fft( rxSignal );        
         end
              
