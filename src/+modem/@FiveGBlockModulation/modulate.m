@@ -34,7 +34,10 @@ switch this.waveform
         signalInTime = ifft( signalInFreq );
         signalInTime = [ signalInTime( end - this.samplesInPrefix + 1 : end, : ); ...
                          signalInTime ];
+        
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
+        
+        
     case enum.modem.fiveG.Waveform.ZT_DS_OFDM
         usefulSamples = this.frame.numberOfUsefulBlocks;
         % include zero tail and head
@@ -54,6 +57,7 @@ switch this.waveform
         % apply IFFT                 
         signalInTime = ifft( signalInFreq );
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
+        
     
     case enum.modem.fiveG.Waveform.FBMC
         
@@ -82,15 +86,11 @@ switch this.waveform
                          signalInTime ];
         
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
-       
+        
         % Passing the signal through the filter
         signalInTime = conv(signalInTime, this.fofdmFilterInTime); % Filtering
         signalInTime = signalInTime(this.fftSize/2:length(signalInTime)-this.fftSize/2); % Removing the expanded samples after filtering
-        
-        [signalSpec, f] = pwelch(signalInTime, [], [], this.fftSize, this.samplingRate); %==========
-        %signalSpec = fftshift(signalSpec);
-        %plot(f, signalSpec);
-        
+
 end
 
 
