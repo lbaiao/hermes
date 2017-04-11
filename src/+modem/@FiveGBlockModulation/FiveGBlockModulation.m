@@ -119,8 +119,7 @@ methods (Access = public)
                 this.samplesInSymbol = FIVEG.FFT_SIZE * ( delaySamples ) + ...
                                        FIVEG.FFT_SIZE/2 + ...
                                        this.filterTail/this.frame.numberOfUsefulBlocks;
-            
-            %FOFDM implementation partially complete                                   
+                                              
             case enum.modem.fiveG.Waveform.FOFDM
                 this.samplesInSymbol = FIVEG.FFT_SIZE + ...
                                        FIVEG.WAVEFORM.OFDM.CYCLIC_PREFIX;
