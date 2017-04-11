@@ -14,8 +14,8 @@ prototypeInTime = fftshift(prototypeInTime); % Shifting the representation to th
 
 % Multiplying the prototype filter in the time domain by the window
 window = hann(filterSize)'; % Hanning window
-filterInTime = prototypeInTime.*window;
+filterInTime = prototypeInTime.*window; 
 
 % Normalizing the filter 
-[sum, ~] = sumsqr(filterInTime); % sum is the squared sum of all of filterInTime's coefficients
-filterInTime = (filterInTime)./sqrt(sum); % After normalizing, the squared sum of filterInTime's coefficients is equal to 1
+%[sum, ~] = sumsqr(filterInTime); % sum is the squared sum of all of filterInTime's coefficients
+%filterInTime = (filterInTime)./sqrt(sum); % After normalizing, the squared sum of filterInTime's coefficients is equal to 1
