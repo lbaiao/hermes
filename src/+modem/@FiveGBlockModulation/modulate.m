@@ -34,7 +34,10 @@ switch this.waveform
         signalInTime = ifft( signalInFreq );
         signalInTime = [ signalInTime( end - this.samplesInPrefix + 1 : end, : ); ...
                          signalInTime ];
+        
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
+        
+        
     case enum.modem.fiveG.Waveform.ZT_DS_OFDM
         usefulSamples = this.frame.numberOfUsefulBlocks;
         % include zero tail and head
@@ -54,6 +57,7 @@ switch this.waveform
         % apply IFFT                 
         signalInTime = ifft( signalInFreq );
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
+        
     
     case enum.modem.fiveG.Waveform.FBMC
         
@@ -69,7 +73,24 @@ switch this.waveform
           synthesisFilterBank( this, signalInFreq );
       
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
-         
+        
+    case enum.modem.fiveG.Waveform.FOFDM 
+        % map frame to FFT
+        signalInFreq = zeros( this.fftSize, ...
+                              this.frame.numberOfUsefulBlocks );
+        signalInFreq( this.subcarrierFreqMap, :, : ) = transmittedFrame;
+
+        % apply IFFT and add cyclic prefix
+        signalInTime = ifft( signalInFreq );
+        signalInTime = [ signalInTime( end - this.samplesInPrefix + 1 : end, : ); ...
+                         signalInTime ];
+        
+        signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
+        
+        % Passing the signal through the filter
+        signalInTime = conv(signalInTime, this.fofdmFilterInTime); % Filtering
+        signalInTime = signalInTime(this.fftSize/2:length(signalInTime)-this.fftSize/2); % Removing the expanded samples after filtering
+
 end
 
 

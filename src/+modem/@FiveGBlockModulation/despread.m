@@ -29,7 +29,9 @@ switch this.waveform
         rxSignal( end - this.samplesInTail + 1 : end, : ) = [];        
     case enum.modem.fiveG.Waveform.FBMC
         % Apply OQAM PostProcessing
-        rxSignal = oqamPostProcessing( this, signalIn );                       
+        rxSignal = oqamPostProcessing( this, signalIn ); 
+    case enum.modem.fiveG.Waveform.FOFDM
+        rxSignal = signalIn;        
 end
 
 

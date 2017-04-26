@@ -24,6 +24,7 @@ classdef Waveform
         UFMC % Universal Filterbank Multicarrier 
         ZT_DS_OFDM % Zero-Tail DFT-Spread OFDM
         FBMC
+        FOFDM
 
     end
 end
