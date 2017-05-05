@@ -36,7 +36,7 @@ switch this.waveform
                          signalInTime ];
         
         signalInTime = reshape( signalInTime, numel( signalInTime ), 1 );
-        display('oi')
+
     case enum.modem.fiveG.Waveform.ZT_DS_OFDM
         usefulSamples = this.frame.numberOfUsefulBlocks;
         % include zero tail and head

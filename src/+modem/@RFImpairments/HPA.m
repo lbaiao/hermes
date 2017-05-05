@@ -1,3 +1,4 @@
+function [amplifiedSignal] = HPA(signalInTime, parameterP, parameterV, IBO)
 % Non-linear power aplifier in the transmitter.
 % Rapp model for a solid state amplifier in which AM/PM conversion is
 % neglected. 
@@ -7,7 +8,6 @@
 %                     A - signal's amplitudes
 %                     IBO - input power back-off in dB
 %%
-function [amplifiedSignal] = HPA(signalInTime, parameterP, parameterV, IBO)
 
 p = parameterP; % Smoothness factor
 v = parameterV; % Small signal gain
