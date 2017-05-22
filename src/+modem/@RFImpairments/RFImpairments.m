@@ -1,4 +1,4 @@
-classdef RFImpairments < modem.BlockModulation
+classdef RFImpairments < handle %modem.BlockModulation
 % RFIMPAIRMENTS class implements the RF impairments present in the
 % transmitter. 
 
