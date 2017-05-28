@@ -21,6 +21,9 @@ end
 % initialize frame
 modulatedSignal = zeros( this.samplesInFrame, this.numberOfAntennas );
 
+%RF Impairments object
+rf = modem.RFImpairments;
+
               
 % perform modulation
 switch this.waveform
@@ -88,12 +91,22 @@ switch this.waveform
         
         % Passing the signal through the filter
         signalInTime = conv(signalInTime, this.fofdmFilterInTime); % Filtering
-        signalInTime = signalInTime(this.fftSize/2:length(signalInTime)-this.fftSize/2); % Removing the expanded samples after filtering
+        signalInTime = signalInTime(this.fftSize/2:length(signalInTime)-this.fftSize/2); % Removing the expanded samples after filtering                
+        
 
 end
 
 
+% include non-linear power aplifier in the transmitter.
+
+signalInTime = rf.HPA(signalInTime, 2, 1, 10);
+
+% include IQ Imbalance
+
+signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
+
 % include useful data in frame
+
 modulatedSignal( this.usefulSamplesIndex, : ) = signalInTime;
 
 

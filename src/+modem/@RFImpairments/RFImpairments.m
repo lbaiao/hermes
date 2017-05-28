@@ -9,9 +9,9 @@ end
 
 methods (Access = public)
 % constructor
-    amplifiedSignal = HPA(this, signalInTime, parameterP, parameterV, IBO);
-
-     iqImbalance = IQImbalance(this, input_signal, a, phase);    
+%     amplifiedSignal = HPA(this, signalInTime, parameterP, parameterV, IBO);
+% 
+%     iqImbalance = IQImbalance(this, input_signal, a, phase);    
 end
 
     
