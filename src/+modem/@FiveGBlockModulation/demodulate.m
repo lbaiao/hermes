@@ -1,4 +1,4 @@
-function frameReceived  = demodulate( this, serialReceivedSignal )
+   function frameReceived  = demodulate( this, serialReceivedSignal )
 %FIVEGBLOCKMODULATION.DEMODULATE demodulates 5G frame 
 %   Detailed explanation is given in the BlockModulation class header.
 %   
@@ -33,7 +33,7 @@ frameReceived  = zeros ( numberOfSubcarriers, ...
                          this.numberOfAntennas );
 %RF Impairments object
 
-iq = modem.RFImpairments;
+%iq = modem.RFImpairments;
 
 %Receives the frame for each antenna                     
 for antCount = 1 : this.numberOfAntennas 

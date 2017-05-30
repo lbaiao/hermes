@@ -15,7 +15,7 @@ A = abs(signalInTime); % Amplitudes of the signal to be amplified
 signalInTimePhases = angle(signalInTime); % Phases of the incoming signal
 
 % Calculating the signal's average power
-Pin = mean(signalInTime.^2); % Input signal's power
+Pin = mean(abs(signalInTime).^2); % Input signal's power 
 PindBW = 10*log10(Pin); % Average power in dBW
 
 % Determining the saturation amplitude Ao

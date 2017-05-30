@@ -108,8 +108,3 @@ signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
 % include useful data in frame
 
 modulatedSignal( this.usefulSamplesIndex, : ) = signalInTime;
-
-
-             
-
-

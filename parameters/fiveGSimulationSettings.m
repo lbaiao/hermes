@@ -31,7 +31,7 @@ FIVEG.FFT_SIZE = 2048;
 FIVEG.USEFUL_SUBCARRIERS = 1650;
 
 % waveform, see allowed values in +enum/+modem/+fiveG/Waveform.m
-FIVEG.WAVEFORM.TYPE = enum.modem.fiveG.Waveform.OFDM;
+FIVEG.WAVEFORM.TYPE = enum.modem.fiveG.Waveform.FBMC;
 
 % OFDM parameters,
 % samples in cyclic prefix
@@ -89,7 +89,7 @@ FIVEG.TRANSPORT_BLOCK_SIZE_BITS = 4000;
 
 
 %% Define MCS Parameters.
-FIVEG.MCS = 10;  % See Table in lookupTables.modem.fiveG.getMcsParam
+FIVEG.MCS = 2;  % See Table in lookupTables.modem.fiveG.getMcsParam %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 FIVEG.CODE.TYPE = enum.modem.CodeType.TURBO;
 FIVEG.CODE.TURBO.ITERATIONS = 4;
 
