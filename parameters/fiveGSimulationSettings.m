@@ -31,7 +31,7 @@ FIVEG.FFT_SIZE = 2048;
 FIVEG.USEFUL_SUBCARRIERS = 1650;
 
 % waveform, see allowed values in +enum/+modem/+fiveG/Waveform.m
-FIVEG.WAVEFORM.TYPE = enum.modem.fiveG.Waveform.FBMC;
+FIVEG.WAVEFORM.TYPE = enum.modem.fiveG.Waveform.FOFDM;
 
 % OFDM parameters,
 % samples in cyclic prefix

@@ -99,11 +99,11 @@ end
 
 % include non-linear power aplifier in the transmitter.
 
-signalInTime = rf.HPA(signalInTime, 2, 1, 10);
+signalInTime = rf.HPA(signalInTime, 2, 1, 9);
 
 % include IQ Imbalance
 
-signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
+%signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
 
 % include useful data in frame
 
