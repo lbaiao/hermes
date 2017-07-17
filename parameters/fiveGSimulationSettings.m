@@ -51,8 +51,19 @@ FIVEG.WAVEFORM.FBMC.FILTER_TAIL = FIVEG.FFT_SIZE/2;
 % see src/+enum/+modem/MimoScheme.m
 FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
 
-%%
-% Define frame structure
+%% Define RF Impairments parameters
+
+% Nonlinear HPA parameters
+
+% Nonlinear HPA with memory parameters
+FIVEG.RF.MEM_HPA.STATUS = 1; % If status = 0, this RF impairment will not be considered
+FIVEG.RF.MEM_HPA.DELAY = 100; % Delay (in samples)
+
+% IQ Imbalance parameters
+
+% Phase noise parameters
+
+%% Define frame structure
 
 % frameType, see allowed values in +enum/+modem/+fiveG/FrameType.m
 FIVEG.FRAME_TYPE = enum.modem.fiveG.FrameType.DOWNLINK;

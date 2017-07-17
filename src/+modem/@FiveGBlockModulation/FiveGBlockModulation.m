@@ -57,6 +57,9 @@ properties ( GetAccess = 'public', SetAccess = 'protected')
     usefulSubcarriers
     fofdmFilterInTime
     
+    memHPAStatus
+    memHPADelay
+    
 end
 
 properties (Access = 'protected')
@@ -96,6 +99,10 @@ methods (Access = public)
                        
         this.numberOfAntennas = this.frame.numberOfAntennas;
         this.centerFrequency = [];
+        
+        % RF impairment parameters
+        this.memHPAStatus = FIVEG.RF.MEM_HPA.STATUS;
+        this.memHPADelay = FIVEG.RF.MEM_HPA.DELAY;
         
         % waveform-specific parameters
         switch this.waveform
