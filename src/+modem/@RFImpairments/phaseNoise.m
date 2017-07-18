@@ -1,8 +1,14 @@
-function [phaseNoiseSignal] = phaseNoise(this, receivedSignalInTime)
-% Introduces the phase noise at the receptor. 
-% The parameters are: receivedSignalInTime
+function [outputSignal] = phaseNoise(this, rxSignal, variance)
+% Introduces the phase noise at the receptor. The phase noise is modelled
+% as a zero mean Gaussian random process with the specified variance.
+% 
+% The parameters are: receivedSignalInTime - signal at the receptor
+%                     variance - the variance of the phase noise
 %
-%% Adding the phase noise to the received signal
+%% Generating the phase noise 
+std = sqrt(variance);
+phaseNoise = std*randn(size(rxSignal)); 
 
-phaseNoiseSignal = receivedSignalInTime.*exp(1i*phi);
+%% Adding the phase noise to the received signal
+outputSignal = rxSignal.*exp(1i*phaseNoise);
 

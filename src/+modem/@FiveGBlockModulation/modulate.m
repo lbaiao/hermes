@@ -106,9 +106,8 @@ end
 %signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
 
 % Passing the signal through a nonlinear HPA with memory
-if this.memHPAStatus == 1
-    signalInTime = rf.MemHPA(signalInTime, this.memHPADelay); %
-end
+%signalInTime = rf.MemHPA(signalInTime, 1000); 
+
  
 
 % include useful data in frame

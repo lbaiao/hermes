@@ -31,9 +31,9 @@ end
 frameReceived  = zeros ( numberOfSubcarriers, ...
                          this.frame.numberOfUsefulBlocks, ...
                          this.numberOfAntennas );
-%RF Impairments object
+%RF Impairments object %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%iq = modem.RFImpairments;
+rf = modem.RFImpairments;
 
 %Receives the frame for each antenna                     
 for antCount = 1 : this.numberOfAntennas 
@@ -41,9 +41,13 @@ for antCount = 1 : this.numberOfAntennas
     % eliminate guard periods
     rxSignal = serialReceivedSignal( this.usefulSamplesIndex, antCount );
     
-    %IQ Imbalance
+    
+    %IQ Imbalance %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     rxSignal = iq.IQImbalance(rxSignal, 0.5, pi/6);
         % reshape, make each symbol a column
+        
+     % Phase noise %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     %rxSignal = rf.phaseNoise(rxSignal, 0.1); 
           
                     
         if this.waveform == enum.modem.fiveG.Waveform.OFDM

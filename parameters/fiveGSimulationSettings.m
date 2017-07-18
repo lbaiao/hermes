@@ -56,8 +56,8 @@ FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
 % Nonlinear HPA parameters
 
 % Nonlinear HPA with memory parameters
-FIVEG.RF.MEM_HPA.STATUS = 1; % If status = 0, this RF impairment will not be considered
-FIVEG.RF.MEM_HPA.DELAY = 100; % Delay (in samples)
+%FIVEG.RF.MEM_HPA.STATUS = 0; % If status = 0, this RF impairment will not be considered
+%FIVEG.RF.MEM_HPA.DELAY = 100; % Delay (in samples)
 
 % IQ Imbalance parameters
 
