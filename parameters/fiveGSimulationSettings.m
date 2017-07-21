@@ -54,23 +54,23 @@ FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
 %% Define RF Impairments parameters
 
 % RF Impairments - HPA parameters
-% FIVEG.RFIMPAIRMENTS.HPA.STATUS = 1;
-% FIVEG.RFIMPAIRMENTS.HPA.P = 2; % Parameter p
-% FIVEG.RFIMPAIRMENTS.HPA.V = 1; % Parameter v
-% FIVEG.RFIMPAIRMENTS.HPA.IBO = 3; % Input back-off in dB
-% 
-% % RF Impairments - HPA with memory parameters
-% FIVEG.RFIMPAIRMENTS.MEM_HPA.STATUS = 1;
-% FIVEG.RFIMPAIRMENTS.MEM_HPA.DELAY = 1; % Delay in samples
-% 
-% % RF Impairments - I/Q imbalance parameters
-% FIVEG.RFIMPAIMENTS.IQ.STATUS = 1;
-% FIVEG.RFIMPAIRMENTS.IQ.AMP = 1; % Perturbation amplitude 
-% FIVEG.RFIMPAIMENTS.IQ.PHASE = 1; % Perturbation phase 
-% 
-% % RF Impairments - Phase noise parameters
-% FIVEG.RFIMPAIRMENTS.PHASE_NOISE.STATUS = 1;
-% FIVEG.RFIMPAIRMENTS.PHASE_NOISE.VARIANCE = 0.1; % Variance of the phase noise
+FIVEG.RFIMPAIRMENTS.HPA.ENABLE = 1;
+FIVEG.RFIMPAIRMENTS.HPA.P = 2; % Parameter p
+FIVEG.RFIMPAIRMENTS.HPA.V = 1; % Parameter v
+FIVEG.RFIMPAIRMENTS.HPA.IBO = 3; % Input back-off in dB
+
+% RF Impairments - HPA with memory parameters
+FIVEG.RFIMPAIRMENTS.MEM_HPA.ENABLE = 1;
+FIVEG.RFIMPAIRMENTS.MEM_HPA.DELAY = 1; % Delay in samples
+
+% RF Impairments - I/Q imbalance parameters
+FIVEG.RFIMPAIRMENTS.IQ.ENABLE = 1;
+FIVEG.RFIMPAIRMENTS.IQ.AMP = 0.03; % Perturbation amplitude 
+FIVEG.RFIMPAIRMENTS.IQ.PHASE = 0.03; % Perturbation phase 
+
+% RF Impairments - Phase noise parameters
+FIVEG.RFIMPAIRMENTS.PHASE_NOISE.ENABLE = 1;
+FIVEG.RFIMPAIRMENTS.PHASE_NOISE.VARIANCE = 0.1; % Variance of the phase noise
 
 %% Define frame structure
 

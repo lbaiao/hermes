@@ -1,5 +1,6 @@
 classdef RFImpairments < handle 
-% RFIMPAIRMENTS class implements the RF impairments present in the
+
+    % RFIMPAIRMENTS class implements the RF impairments present in the
 % transmitter and/or receiver. 
 
 

@@ -63,7 +63,39 @@ paramTable.addParameter( 'WAVEFORM.FBMC.FILTER_TAIL', 'uint32', ...
 paramTable.addParameter( 'WAVEFORM.FOFDM', 'struct' );
                       
 paramTable.addParameter( 'MIMO_SCHEME', 'enum.modem.MimoScheme', ...
-                         'default', 'enum.modem.MimoScheme.NONE' );                       
+                         'default', 'enum.modem.MimoScheme.NONE' );  
+                     
+paramTable.addParameter( 'RFIMPAIRMENTS', 'struct' );
+
+paramTable.addParameter( 'RFIMPAIRMENTS.HPA', 'struct');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.HPA.ENABLE', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.HPA.P', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.HPA.V', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.HPA.IBO', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA', 'struct');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA.ENABLE', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA.DELAY', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.IQ', 'struct');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.IQ.ENABLE', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.IQ.AMP', 'double');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.IQ.PHASE', 'double');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.PHASE_NOISE', 'struct');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.PHASE_NOISE.ENABLE', 'uint32');
+
+paramTable.addParameter( 'RFIMPAIRMENTS.PHASE_NOISE.VARIANCE', 'double');
                      
 paramTable.addParameter( 'FRAME_TYPE', 'enum.modem.fiveG.FrameType', ...
                          enum.parameterCheck.Property.IS_MANDATORY );
