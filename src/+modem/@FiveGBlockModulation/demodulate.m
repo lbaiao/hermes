@@ -44,7 +44,7 @@ for antCount = 1 : this.numberOfAntennas
     
     %IQ Imbalance %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     if(this.rfImpairments.IQ.ENABLE)
-        signalInTime = rf.IQImbalance(signalInTime, ...
+        rxSignal = rf.IQImbalance(rxSignal, ...
                        this.rfImpairments.IQ.AMP, this.rfImpairments.IQ.PHASE);        
     end
     

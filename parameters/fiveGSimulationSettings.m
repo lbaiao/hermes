@@ -54,7 +54,7 @@ FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
 %% Define RF Impairments parameters
 
 % RF Impairments - HPA parameters
-FIVEG.RFIMPAIRMENTS.HPA.ENABLE = 1;
+FIVEG.RFIMPAIRMENTS.HPA.ENABLE = 0;
 FIVEG.RFIMPAIRMENTS.HPA.P = 2; % Parameter p
 FIVEG.RFIMPAIRMENTS.HPA.V = 1; % Parameter v
 FIVEG.RFIMPAIRMENTS.HPA.IBO = 3; % Input back-off in dB

@@ -36,6 +36,5 @@ secondDelay = [adjustSecond; secondDelay]; % Adjusting the size
 
 amplifiedSignal = noDelay + firstDelay + secondDelay;          
 
-display('teste')
 end
 

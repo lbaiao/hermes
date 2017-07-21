@@ -69,7 +69,8 @@ paramTable.addParameter( 'RFIMPAIRMENTS', 'struct' );
 
 paramTable.addParameter( 'RFIMPAIRMENTS.HPA', 'struct');
 
-paramTable.addParameter( 'RFIMPAIRMENTS.HPA.ENABLE', 'uint32');
+paramTable.addParameter( 'RFIMPAIRMENTS.HPA.ENABLE', 'uint32', ...
+                          enum.parameterCheck.Property.IS_MANDATORY );
 
 paramTable.addParameter( 'RFIMPAIRMENTS.HPA.P', 'uint32');
 
@@ -79,13 +80,15 @@ paramTable.addParameter( 'RFIMPAIRMENTS.HPA.IBO', 'uint32');
 
 paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA', 'struct');
 
-paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA.ENABLE', 'uint32');
+paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA.ENABLE', 'uint32', ...
+                          enum.parameterCheck.Property.IS_MANDATORY );
 
 paramTable.addParameter( 'RFIMPAIRMENTS.MEM_HPA.DELAY', 'uint32');
 
 paramTable.addParameter( 'RFIMPAIRMENTS.IQ', 'struct');
 
-paramTable.addParameter( 'RFIMPAIRMENTS.IQ.ENABLE', 'uint32');
+paramTable.addParameter( 'RFIMPAIRMENTS.IQ.ENABLE', 'uint32', ... 
+                          enum.parameterCheck.Property.IS_MANDATORY );
 
 paramTable.addParameter( 'RFIMPAIRMENTS.IQ.AMP', 'double');
 
