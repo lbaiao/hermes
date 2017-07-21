@@ -115,7 +115,6 @@ end
 % ylabel('Magnitude')
 % grid on
 % 
-% display('oi')
 % ==========================================================================
 
 % include useful data in frame

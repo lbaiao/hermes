@@ -47,6 +47,12 @@ FIVEG.WAVEFORM.ZT_DS_OFDM.HEAD = 2;
 FIVEG.WAVEFORM.FBMC.OVERLAPPING_FACTOR = 4;
 FIVEG.WAVEFORM.FBMC.FILTER_TAIL = FIVEG.FFT_SIZE/2;
 
+% MIMO settings
+% see src/+enum/+modem/MimoScheme.m
+FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
+
+%% Define RF Impairments parameters
+
 % RF Impairments - HPA parameters
 % FIVEG.RFIMPAIRMENTS.HPA.STATUS = 1;
 % FIVEG.RFIMPAIRMENTS.HPA.P = 2; % Parameter p
@@ -65,23 +71,6 @@ FIVEG.WAVEFORM.FBMC.FILTER_TAIL = FIVEG.FFT_SIZE/2;
 % % RF Impairments - Phase noise parameters
 % FIVEG.RFIMPAIRMENTS.PHASE_NOISE.STATUS = 1;
 % FIVEG.RFIMPAIRMENTS.PHASE_NOISE.VARIANCE = 0.1; % Variance of the phase noise
-
-
-% MIMO settings
-% see src/+enum/+modem/MimoScheme.m
-FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
-
-%% Define RF Impairments parameters
-
-% Nonlinear HPA parameters
-
-% Nonlinear HPA with memory parameters
-%FIVEG.RF.MEM_HPA.STATUS = 0; % If status = 0, this RF impairment will not be considered
-%FIVEG.RF.MEM_HPA.DELAY = 100; % Delay (in samples)
-
-% IQ Imbalance parameters
-
-% Phase noise parameters
 
 %% Define frame structure
 
