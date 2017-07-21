@@ -98,18 +98,25 @@ end
 
 
 % include non-linear power aplifier in the transmitter.
-
 %signalInTime = rf.HPA(signalInTime, 2, 1, 9);
 
 % include IQ Imbalance
-
 %signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
 
 % Passing the signal through a nonlinear HPA with memory
-%signalInTime = rf.MemHPA(signalInTime, 1000); 
+%signalInTime = rf.MemHPA(signalInTime, 1); 
 
  
+% Signal's spectrum ========================================================
+%[signalSpec, frequencies] = pwelch(signalInTime, [], [], this.fftSize, this.samplingRate); 
+%signalSpec = fftshift(signalSpec);
+% semilogy(f, signalSpec);
+% xlabel('Frequencies')
+% ylabel('Magnitude')
+% grid on
+% 
+% display('oi')
+% ==========================================================================
 
 % include useful data in frame
-
 modulatedSignal( this.usefulSamplesIndex, : ) = signalInTime;

@@ -47,7 +47,7 @@ for antCount = 1 : this.numberOfAntennas
         % reshape, make each symbol a column
         
      % Phase noise %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     %rxSignal = rf.phaseNoise(rxSignal, 0.1); 
+     rxSignal = rf.phaseNoise(rxSignal, 0.25); 
           
                     
         if this.waveform == enum.modem.fiveG.Waveform.OFDM
