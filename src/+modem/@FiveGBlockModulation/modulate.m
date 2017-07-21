@@ -22,7 +22,7 @@ end
 modulatedSignal = zeros( this.samplesInFrame, this.numberOfAntennas );
 
 %RF Impairments object
-rf = modem.RFImpairments;
+%rf = modem.RFImpairments;
 
               
 % perform modulation

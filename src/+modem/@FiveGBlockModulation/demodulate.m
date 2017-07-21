@@ -43,13 +43,19 @@ for antCount = 1 : this.numberOfAntennas
     
     
     %IQ Imbalance %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     rxSignal = iq.IQImbalance(rxSignal, 0.5, pi/6);
-        % reshape, make each symbol a column
+    if(this.rfImpairments.IQ.ENABLE)
+        signalInTime = rf.IQImbalance(signalInTime, ...
+                       this.rfImpairments.IQ.AMP, this.rfImpairments.IQ.PHASE);        
+    end
+    
+    % reshape, make each symbol a column
         
      % Phase noise %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     rxSignal = rf.phaseNoise(rxSignal, 0.25); 
-          
-                    
+     
+     if(this.rfImpairments.PHASE_NOISE.ENABLE)
+         rxSignal = rf.phaseNoise(rxSignal, this.rfImpairments.PHASE_NOISE.VARIANCE); 
+     end          
+                              
         if this.waveform == enum.modem.fiveG.Waveform.OFDM
             % remove cyclic prefix
             rxSignal = reshape( rxSignal, this.samplesInSymbol, ...
