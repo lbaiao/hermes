@@ -145,6 +145,8 @@ switch waveformType
         WAVEFORM = 'ZT-ds-OFDM';
     case enum.modem.fiveG.Waveform.FBMC
         WAVEFORM = 'FBMC';
+    case enum.modem.fiveG.Waveform.FOFDM
+        WAVEFORM = 'F-OFDM';
 end
 
 
