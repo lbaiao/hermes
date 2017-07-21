@@ -22,7 +22,7 @@ end
 modulatedSignal = zeros( this.samplesInFrame, this.numberOfAntennas );
 
 %RF Impairments object
-%rf = modem.RFImpairments;
+rf = modem.RFImpairments;
 
               
 % perform modulation
@@ -98,13 +98,26 @@ end
 
 
 % include non-linear power aplifier in the transmitter.
-%signalInTime = rf.HPA(signalInTime, 2, 1, 9);
+
+if(this.rfImpairments.HPA.ENABLE && ~this.rfImpairments.MEM_HPA.ENABLE)
+    signalInTime = rf.HPA(signalInTime, this.rfImpairments.HPA.P, ...
+                   this.rfImpairments.HPA.V, this.rfImpairments.HPA.IBO);
+end
+
+%
 
 % include IQ Imbalance
-%signalInTime = rf.IQImbalance(signalInTime, 0.5, pi/6);
+
+if(this.rfImpairments.IQ.ENABLE)
+    signalInTime = rf.IQImbalance(signalInTime, ...
+                   this.rfImpairments.IQ.AMP, this.rfImpairments.IQ.PHASE);        
+end
 
 % Passing the signal through a nonlinear HPA with memory
-%signalInTime = rf.MemHPA(signalInTime, 1); 
+
+if(this.rfImpairments.MEM_HPA.ENABLE && ~this.rfImpairments.HPA.ENABLE)
+    signalInTime = rf.MemHPA(signalInTime, this.rfImpairments.MEM_HPA.DELAY); 
+end
 
  
 % Signal's spectrum ========================================================
