@@ -2,7 +2,7 @@ function [outputSignal] = phaseNoise(this, rxSignal, variance)
 % Introduces the phase noise at the receptor. The phase noise is modelled
 % as a zero mean Gaussian random process with the specified variance.
 % 
-% The parameters are: receivedSignalInTime - signal at the receptor
+% The parameters are: rxSignal - signal at the receptor
 %                     variance - the variance of the phase noise
 %
 %% Generating the phase noise 
