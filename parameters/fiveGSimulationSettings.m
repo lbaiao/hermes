@@ -49,7 +49,7 @@ FIVEG.WAVEFORM.FBMC.FILTER_TAIL = FIVEG.FFT_SIZE/2;
 
 % MIMO settings
 % see src/+enum/+modem/MimoScheme.m
-FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.TRANSMIT_DIVERSITY;
+FIVEG.MIMO_SCHEME = enum.modem.MimoScheme.NONE;
 
 %% Define RF Impairments parameters
 
